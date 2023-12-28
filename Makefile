@@ -2,7 +2,7 @@ fmt:
 	go mod tidy
 	go fmt ./...
 build:
-	go build -o bin/atest-store-git .
+	go build -o bin/atest-store-mongodb .
 test:
 	go test ./... -cover -v -coverprofile=coverage.out
 	go tool cover -func=coverage.out
