@@ -1,8 +1,5 @@
 FROM golang:1.20 AS builder
 
-LABEL org.opencontainers.image.source=https://github.com/LinuxSuRen/atest-ext-store-git
-LABEL org.opencontainers.image.description="Git Store Extension of the API Testing."
-
 ARG VERSION
 ARG GOPROXY
 WORKDIR /workspace
@@ -14,10 +11,13 @@ COPY main.go main.go
 COPY README.md README.md
 
 RUN GOPROXY=${GOPROXY} go mod download
-RUN GOPROXY=${GOPROXY} CGO_ENABLED=0 go build -ldflags "-w -s" -o atest-store-mangodb .
+RUN GOPROXY=${GOPROXY} CGO_ENABLED=0 go build -ldflags "-w -s" -o atest-store-mongodb .
 
 FROM alpine:3.12
 
-COPY --from=builder /workspace/atest-store-mangodb /usr/local/bin/atest-store-mangodb
+LABEL org.opencontainers.image.source=https://github.com/LinuxSuRen/atest-ext-store-mongodb
+LABEL org.opencontainers.image.description="MongoDB Store Extension of the API Testing."
 
-CMD [ "atest-store-mangodb" ]
+COPY --from=builder /workspace/atest-store-mongodb /usr/local/bin/atest-store-mongodb
+
+CMD [ "atest-store-mongodb" ]
