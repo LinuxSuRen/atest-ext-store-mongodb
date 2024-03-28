@@ -29,22 +29,25 @@ jobs:
         with:
           go-version: 1.20.x
       - name: Image Registry Login
+        if: github.ref != 'refs/heads/master'
         run: |
           docker login --username linuxsuren --password ${{secrets.DOCKER_HUB_PUBLISH_SECRETS}}
           docker login ${{ env.REGISTRY }}/linuxsuren --username linuxsuren --password ${{secrets.GH_PUBLISH_SECRETS}}
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2.9.1
+        if: github.ref != 'refs/heads/master'
         with:
           version: latest
           args: release --rm-dist
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PUBLISH_SECRETS }}
       - name: Upload via oras
+        if: github.ref != 'refs/heads/master'
         run: |
           export TAG=${{ steps.vars.outputs.tag }}
           TAG=${TAG#v}
-          oras push ${{ env.REGISTRY_DOCKERHUB }}/linuxsuren/${{ env.IMAGE_NAME }}:$TAG release
-          oras push ${{ env.REGISTRY }}/linuxsuren/${{ env.IMAGE_NAME }}:$TAG release
+          oras push ${{ env.REGISTRY_DOCKERHUB }}/linuxsuren/${{ env.IMAGE_NAME }}:$TAG dist
+          oras push ${{ env.REGISTRY }}/linuxsuren/${{ env.IMAGE_NAME }}:$TAG dist
 
   image:
     runs-on: ubuntu-20.04
