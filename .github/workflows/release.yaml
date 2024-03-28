@@ -46,8 +46,8 @@ jobs:
         run: |
           export TAG=${{ steps.vars.outputs.tag }}
           TAG=${TAG#v}
-          oras push ${{ env.REGISTRY_DOCKERHUB }}/linuxsuren/${{ env.IMAGE_NAME }}:$TAG dist
-          oras push ${{ env.REGISTRY }}/linuxsuren/${{ env.IMAGE_NAME }}:$TAG dist
+          oras push ${{ env.REGISTRY_DOCKERHUB }}/${{ env.IMAGE_NAME }}:$TAG dist
+          oras push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$TAG dist
 
   image:
     runs-on: ubuntu-20.04
