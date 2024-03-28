@@ -45,8 +45,8 @@ jobs:
         if: github.ref != 'refs/heads/master'
         run: |
           export TAG=${{ steps.vars.outputs.tag }}
-          oras push ${{ env.REGISTRY_DOCKERHUB }}/${{ env.IMAGE_NAME }}:${TAG#v} dist
-          oras push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${TAG#v} dist
+          oras push ${{ env.REGISTRY_DOCKERHUB }}/linuxsuren/atest-ext-store-mongodb:${TAG#v} dist
+          oras push ${{ env.REGISTRY }}/linuxsuren/atest-ext-store-mongodb:${TAG#v} dist
 
   image:
     runs-on: ubuntu-20.04
